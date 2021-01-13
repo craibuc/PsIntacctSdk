@@ -12,5 +12,5 @@ Task Symlink -description "Create a symlink for '$ModuleName' module" {
 }
   
 Task Publish -description "Publish module '$ModuleName' to repository '$RepositoryName'" {
-    publish-module -name ./PsIntacct -Repository Lorenz
+    Publish-Module -name $ModuleName -Repository $RepositoryName
 }
