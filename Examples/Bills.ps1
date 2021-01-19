@@ -1,6 +1,3 @@
-[CmdletBinding()]
-param()
-
 Import-Module PsIntacctSdk -Force
 
 $SenderCredential= Get-Credential
