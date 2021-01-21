@@ -45,7 +45,6 @@ function Save-IntacctSdkObject {
                 $task.Wait()
             
                 [Intacct.SDK.Xml.OnlineResponse]$Response = $task.Result
-                # [Newtonsoft.Json.JsonConvert]::SerializeObject( $Response.Results[0] ) | ConvertFrom-Json
                 $Response.Results[0]
             }
             catch 
