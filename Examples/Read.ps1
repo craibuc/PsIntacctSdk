@@ -9,11 +9,5 @@ $CompanyId = 'CompanyId'
 
 New-IntacctSdkSession -SenderCredential $SenderCredential -UserCredential $UserCredential -CompanyId $CompanyId
 
-$Field = 'VENDORID','VENDORNAME','RECORDNO','RECORDID','STATE'
-
-$Result = Get-IntacctSdkObject -ObjectName 'APBILL' -Field $Field -Key 3054
-$Result
-
-$Query = "VENDORID='AB10000'"
-$Result = Find-IntacctSdkObject -ObjectName 'APBILL' -Field $Field -Query $Query
-$Result
+$Result = Find-IntacctSdkObject -ObjectName 'APBILL' -Field 'RECORDNO','RECORDID','VENDORID' -Query "VENDORID='AB10000'"
+$Result.apbill | FT
