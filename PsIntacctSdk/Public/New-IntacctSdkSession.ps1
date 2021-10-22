@@ -19,9 +19,43 @@ function New-IntacctSdkSession {
         $ClientConfig.UserPassword = $UserCredential.Password | ConvertFrom-SecureString -AsPlainText
         $ClientConfig.CompanyId = $CompanyId
     
-        [Intacct.SDK.OnlineClient]$OnlineClient = [Intacct.SDK.OnlineClient]::new($ClientConfig)        
-        [System.Threading.Tasks.Task[Intacct.SDK.Xml.OnlineResponse]]$task = $OnlineClient.Execute($ApiSessionCreate);
-        $task.Wait()
+        [Intacct.SDK.OnlineClient]$OnlineClient = [Intacct.SDK.OnlineClient]::new($ClientConfig)
+
+        $attempt = 1
+        $max_attempts = 3
+        $delay = 1
+
+        do 
+        {
+            try 
+            {
+                Write-Verbose "Executing..."
+                [System.Threading.Tasks.Task[Intacct.SDK.Xml.OnlineResponse]]$task = $OnlineClient.Execute($ApiSessionCreate);
+                $task.Wait()
+
+                $success = $true
+            }
+            catch 
+            {
+                if ($attempt -eq $max_attempts)
+                {
+                    Write-Warning "Attempt $($attempt) failed.  Exiting loop."
+
+                    # exit loop by throwing the error which will be cause by outer catcy
+                    throw
+                }
+
+                if ( $attempt -lt $max_attempts )
+                {
+                    Write-Warning "Attempt $($attempt) failed.  Retrying in $delay seconds."
+                    Start-Sleep -Seconds $delay    
+                }
+                
+            }
+
+            $attempt++
+
+        } until ($success)
             
         [Intacct.SDK.Xml.OnlineResponse]$Response = $task.Result
     
