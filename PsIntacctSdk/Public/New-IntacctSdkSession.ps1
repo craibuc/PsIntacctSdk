@@ -39,7 +39,7 @@ function New-IntacctSdkSession {
             {
                 if ($attempt -eq $max_attempts)
                 {
-                    Write-Warning "Attempt $($attempt) failed.  Exiting loop."
+                    Write-Host "WARNING: Attempt $($attempt) failed.  Exiting loop." -ForegroundColor Yellow
 
                     # exit loop by throwing the error which will be cause by outer catcy
                     throw
@@ -47,7 +47,7 @@ function New-IntacctSdkSession {
 
                 if ( $attempt -lt $max_attempts )
                 {
-                    Write-Warning "Attempt $($attempt) failed.  Retrying in $delay seconds."
+                    Write-Host "WARNING: Attempt $($attempt) failed.  Retrying in $delay seconds." -ForegroundColor Yellow
                     Start-Sleep -Seconds $delay    
                 }
                 
